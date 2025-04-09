@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainbow Digital Clock</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a, #000);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        .clock-container {
+            perspective: 1000px;
+        }
+        
+        .clock {
+            background: linear-gradient(45deg, 
+                #ff0000, #ff8000, #ffff00, 
+                #80ff00, #00ff00, #00ff80, 
+                #00ffff, #0080ff, #0000ff, 
+                #8000ff, #ff00ff, #ff0080);
+            background-size: 600% 600%;
+            animation: rainbow 15s ease infinite;
+            color: white;
+            padding: 30px 60px;
+            border-radius: 15px;
+            font-size: 4rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        
+        .clock:hover {
+            transform: rotateY(10deg) rotateX(5deg);
+        }
+        
+        .time {
+            letter-spacing: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .date {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-top: 15px;
+            color: white;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50% }
+            50% { background-position: 100% 50% }
+            100% { background-position: 0% 50% }
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-container">
+        <div class="clock">
+            <div class="time" id="time"></div>
+            <div class="date" id="date"></div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            
+            const dayName = days[now.getDay()];
+            const monthName = months[now.getMonth()];
+            const day = now.getDate();
+            const year = now.getFullYear();
+            document.getElementById('time').textContent = `${hours.toString().padStart(2, '0')}:${minutes}:${seconds} ${ampm}`;
+            document.getElementById('date').textContent = `${dayName}, ${monthName} ${day}, ${year}`;
+            setTimeout(updateClock, 1000);
+        }
+        updateClock();
+    </script>
+</body>
+</html>
